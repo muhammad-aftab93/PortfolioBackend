@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio", "Portfolio\Portfolio.csproj", "{D22850B2-2493-4ACC-A2DB-06C5BFBB303A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Portfolio\Api.csproj", "{D22850B2-2493-4ACC-A2DB-06C5BFBB303A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Portfolio", "Portfolio", "{37973768-2CC1-4207-931D-07FFE49B0F5A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{DDE546A6-76F6-47E6-B696-DE3B29A8B7DF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{96F39B69-521B-4AB7-A18D-38ABAB8B5E2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +21,22 @@ Global
 		{D22850B2-2493-4ACC-A2DB-06C5BFBB303A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D22850B2-2493-4ACC-A2DB-06C5BFBB303A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D22850B2-2493-4ACC-A2DB-06C5BFBB303A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDE546A6-76F6-47E6-B696-DE3B29A8B7DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDE546A6-76F6-47E6-B696-DE3B29A8B7DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDE546A6-76F6-47E6-B696-DE3B29A8B7DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDE546A6-76F6-47E6-B696-DE3B29A8B7DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96F39B69-521B-4AB7-A18D-38ABAB8B5E2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96F39B69-521B-4AB7-A18D-38ABAB8B5E2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96F39B69-521B-4AB7-A18D-38ABAB8B5E2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96F39B69-521B-4AB7-A18D-38ABAB8B5E2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D22850B2-2493-4ACC-A2DB-06C5BFBB303A} = {37973768-2CC1-4207-931D-07FFE49B0F5A}
+		{DDE546A6-76F6-47E6-B696-DE3B29A8B7DF} = {37973768-2CC1-4207-931D-07FFE49B0F5A}
+		{96F39B69-521B-4AB7-A18D-38ABAB8B5E2B} = {37973768-2CC1-4207-931D-07FFE49B0F5A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {806E2B86-6D7C-463A-8255-077464485E75}
