@@ -8,12 +8,18 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
 app.UseSwagger();
-app.UseSwaggerUI();
-//}
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseSwaggerUI(c =>
+        {
+            c.RoutePrefix = "";
+            c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API v1");
+        });
+}
+else
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API v1"));
 
 app.UseHttpsRedirection();
 app.RegisterEndpoints();
