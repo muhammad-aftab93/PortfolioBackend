@@ -4,9 +4,7 @@
     {
         public static void RegisterEndpoints(this WebApplication app)
         {
-            // Weather Forcast Endpoint
             app.RegisterWeatherForecastEndpoint();
-
         }
     }
 }
