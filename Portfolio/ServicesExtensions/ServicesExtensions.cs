@@ -1,4 +1,6 @@
 ﻿using Api.Endpoints;
+using Api.Mappings;
+using Common;
 using Database.Services;
 using Database.Services.Interfaces;
 using Services;
@@ -12,10 +14,13 @@ namespace Api.ServicesExtensions
         {
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            var mongoDbSettings = builder.Configuration.GetSection("MongoDbSettings");
-            MongoDbSettings.ConnectionURI = mongoDbSettings["ConnectionURI"]!;
-            MongoDbSettings.DatabaseName = mongoDbSettings["DatabaseName"]!;
-            //builder.Services.AddOptions<MongoDbSettings>().BindConfiguration("MongoDbSettings"); an alternate to the above line
+            string connectionString = builder.Configuration["AppSettings"]!;
+
+            // Load Confiuration form Azure App Configuration
+            builder.Configuration.AddAzureAppConfiguration(connectionString);
+            MongoDbSettings.ConnectionURI = builder.Configuration["MongoDbSettings:ConnectionURI"]!;
+            MongoDbSettings.DatabaseName = builder.Configuration["MongoDbSettings:DatabaseName"]!;
+            
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddSingleton(typeof(IMongoDbService<>), typeof(MongoDbService<>));
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -8,11 +8,11 @@ namespace Api.Endpoints
 {
     public static class UserEnpoints
     {
-        public static void RegisterWeatherForecastEndpoint(this WebApplication app)
+        public static void RegisterUserEndpoint(this WebApplication app)
         {
             app.MapGet("/users", async (IUserService userService, IMapper mapper) =>
                 {
-                    return mapper.Map<Api.Models.User>(await userService.GetAsync());
+                    return mapper.Map<List<Api.Models.User>>(await userService.GetAsync());
                 })
             .WithName("Get all users")
             .WithOpenApi();

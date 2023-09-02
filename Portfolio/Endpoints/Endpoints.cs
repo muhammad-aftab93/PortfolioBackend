@@ -4,7 +4,7 @@
     {
         public static void RegisterEndpoints(this WebApplication app)
         {
-            app.RegisterWeatherForecastEndpoint();
+            app.RegisterUserEndpoint();
         }
     }
 }
