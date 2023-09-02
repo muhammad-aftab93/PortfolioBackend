@@ -11,8 +11,7 @@ namespace Api.Mappings
 
         private void CreateMaps()
         {
-            CreateMap<Models.User, Database.Entities.User>()
-                .ForMember(dest => dest.Password, opt => opt.Ignore())
+            CreateMap<Database.Entities.User, Models.User>()
                 .ReverseMap();
 
             CreateMap<Models.CreateUserRequest, Database.Entities.User>()
