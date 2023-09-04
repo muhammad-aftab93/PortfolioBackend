@@ -1,17 +1,13 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Api.Models;
+﻿using Api.Models;
 using AutoMapper;
 using Common;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Services;
 using Services.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Api.Endpoints
 {
@@ -72,7 +68,7 @@ namespace Api.Endpoints
                     if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
                         return Results.BadRequest("Invalid username/password.");
 
-                    var token = GenerateToken(request.Email);
+                    var token = HelperFunctions.GenerateToken(user.Id, request.Email);
 
                     return Results.Ok(new
                     {
@@ -83,35 +79,13 @@ namespace Api.Endpoints
                 .WithName("Login user")
                 .WithOpenApi();
 
-            app.MapGet("users/test", [Authorize] () =>
+            app.MapGet("users/test", [Authorize] (HttpContext context) =>
                 {
+                    var userId = context.User.FindFirstValue("id");
                     return Results.Ok("Hello World!");
                 })
                 .WithName("Test user")
                 .WithOpenApi();
-        }
-
-        private static string GenerateToken(string email)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.JwtSecretKey));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, email),
-                new Claim(JwtRegisteredClaimNames.Email, email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            };
-
-            var token = new JwtSecurityToken(
-                JwtSettings.JwtIssuer,
-                JwtSettings.JwtAudience,
-                claims,
-                expires: DateTime.Now.AddHours(1),
-                signingCredentials: credentials
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

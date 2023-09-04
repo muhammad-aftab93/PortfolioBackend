@@ -5,6 +5,7 @@
         public static void RegisterEndpoints(this WebApplication app)
         {
             app.RegisterUserEndpoint();
+            app.RegisterPersonalDetailsEndpoint();
         }
     }
 }

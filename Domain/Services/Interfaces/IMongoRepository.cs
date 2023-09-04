@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Database.Services.Interfaces
 {
-    public interface IMongoDbService<T>
+    public interface IMongoRepository<T>
     {
         Task<List<T>> GetAsync();
         Task<List<T>> GetAsync(FilterDefinition<T> filter);

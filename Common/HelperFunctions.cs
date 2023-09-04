@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,10 +16,57 @@ namespace Common
             var collectionName = typeof(T).ToString().ToLower().Split('.');
             if (collectionName.Contains("user"))
                 return "users";
-            else if (collectionName.Contains("weather"))
-                return "weatherforecasts";
+            else if (collectionName.Contains("personaldetails"))
+                return "personal_details";
             else
                 return "unknown";
+        }
+
+        public static string GenerateToken(string id, string email)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.JwtSecretKey));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim("id", id),
+                new Claim(JwtRegisteredClaimNames.Email, email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            var token = new JwtSecurityToken(
+                JwtSettings.JwtIssuer,
+                JwtSettings.JwtAudience,
+                claims,
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: credentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public static string? GetUserIdFromToken(string token)
+        {
+            if (token == null) throw new ArgumentNullException(nameof(token));
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = GetTokenValidationParameters();
+            var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+            var subClaim = claimsPrincipal.FindFirst("sub");
+            return subClaim?.Value;
+        }
+
+        public static TokenValidationParameters GetTokenValidationParameters()
+        {
+            return new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = JwtSettings.JwtIssuer,
+                ValidAudience = JwtSettings.JwtAudience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.JwtSecretKey))
+            };
         }
     }
 }
