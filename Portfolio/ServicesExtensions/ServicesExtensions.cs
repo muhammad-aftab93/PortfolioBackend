@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Services;
 using Services.Interfaces;
 using System.Text;
+using Microsoft.OpenApi.Models;
 
 namespace Api.ServicesExtensions
 {
@@ -15,9 +16,35 @@ namespace Api.ServicesExtensions
         public static void AddServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            string connectionString = builder.Configuration["AppSettings"]!;
+            builder.Services.AddSwaggerGen(opt =>
+            {
+                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "Portfolio API", Version = "v1" });
+                opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer"
+                });
+                opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
+                });
+            });
 
+            string connectionString = builder.Configuration["AppSettings"]!;
             // Load Configuration form Azure App Configuration
             builder.Configuration.AddAzureAppConfiguration(connectionString);
             MongoDbSettings.ConnectionURI = builder.Configuration["MongoDbSettings:ConnectionURI"]!;
