@@ -27,6 +27,9 @@ namespace Database.Services
         public async Task<List<T>> GetAsync()
             => await _collection.Find<T>(new BsonDocument()).ToListAsync();
 
+        public Task<List<T>> GetAsync(FilterDefinition<T> filter)
+            => _collection.Find(filter).ToListAsync();
+
         public async Task<T> GetByIdAsync(string id)
             => await _collection.Find<T>(new BsonDocument("_id", new ObjectId(id))).FirstOrDefaultAsync();
 

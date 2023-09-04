@@ -11,6 +11,7 @@ namespace Services.Interfaces
     {
         Task<List<User>> GetAsync();
         Task<User> GetByIdAsync(string id);
+        Task<User?> GetByEmailAsync(string email);
         Task<User> CreateAsync(User user);
         Task<bool> UpdateAsync(User user, string id);
         Task<bool> DeleteAsync(string id);
