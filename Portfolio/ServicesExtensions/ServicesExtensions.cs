@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Services;
 using Services.Interfaces;
 using System.Text;
+using Api.Middlewares;
 using Microsoft.OpenApi.Models;
 
 namespace Api.ServicesExtensions
@@ -54,23 +55,11 @@ namespace Api.ServicesExtensions
             JwtSettings.JwtSecretKey = builder.Configuration["JwtSettings:JwtSecretKey"]!;
             builder.Services.AddCors();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = JwtSettings.JwtIssuer,
-                        ValidAudience = JwtSettings.JwtAudience,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.JwtSecretKey))
-                    };
-                });
+                .AddJwtBearer(options => options.TokenValidationParameters = HelperFunctions.GetTokenValidationParameters());
             builder.Services.AddAuthorization();
-
             builder.Services.AddTransient<IUserService, UserService>();
-            builder.Services.AddSingleton(typeof(IMongoDbService<>), typeof(MongoDbService<>)); // below service is being used as an alternative
+            builder.Services.AddTransient<IPersonalDetailsService, PersonalDetailsService>();
+            builder.Services.AddSingleton(typeof(IMongoRepository<>), typeof(MongoRepository<>)); // below service is being used as an alternative
             builder.Services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
@@ -95,6 +84,7 @@ namespace Api.ServicesExtensions
             });
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<AuthorizationHeaderMiddleware>();
             app.UseHttpsRedirection();
             app.RegisterEndpoints();
 

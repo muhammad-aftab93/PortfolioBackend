@@ -11,11 +11,11 @@ using Common;
 
 namespace Database.Services
 {
-    public class MongoDbService<T> : IMongoDbService<T> where T : new()
+    public class MongoRepository<T> : IMongoRepository<T> where T : new()
     {
         private readonly IMongoCollection<T> _collection;
 
-        public MongoDbService()
+        public MongoRepository()
         {
             var client = new MongoClient(MongoDbSettings.ConnectionURI);
             var database = client.GetDatabase(MongoDbSettings.DatabaseName);

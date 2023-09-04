@@ -12,9 +12,9 @@ namespace Services
 {
     public class UserService : IUserService
     {
-        private readonly IMongoDbService<User> _dbService;
+        private readonly IMongoRepository<User> _dbService;
 
-        public UserService(IMongoDbService<User> dbService, IGenericRepository<User> dbService2)
+        public UserService(IMongoRepository<User> dbService)
             => _dbService = dbService;
 
         public async Task<List<User>> GetAsync()
