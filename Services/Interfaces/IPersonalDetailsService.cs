@@ -10,5 +10,6 @@ namespace Services.Interfaces
     public interface IPersonalDetailsService
     {
         Task<PersonalDetails?> GetAsync();
+        Task<bool> SaveAsync(PersonalDetails personalDetails);
     }
 }
