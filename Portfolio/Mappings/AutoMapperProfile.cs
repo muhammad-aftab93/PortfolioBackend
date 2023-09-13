@@ -24,6 +24,13 @@ namespace Api.Mappings
             CreateMap<Models.CreatePersonalDetailsRequest, Database.Entities.PersonalDetails>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ReverseMap();
+            
+            CreateMap<Models.MySkills, Database.Entities.MySkills>()
+                .ReverseMap();
+
+            CreateMap<Models.CreateMySkillsRequest, Database.Entities.MySkills>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ReverseMap();
         }
     }
 }

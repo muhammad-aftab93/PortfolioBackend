@@ -11,21 +11,17 @@ using System.Text;
 
 namespace Api.Endpoints
 {
-    public static class UserEnpoints
+    public static class UserEndpoints
     {
         public static void RegisterUserEndpoint(this WebApplication app)
         {
-            app.MapGet("/users", async (IUserService userService, IMapper mapper) =>
-                {
-                    return mapper.Map<List<Api.Models.User>>(await userService.GetAsync());
-                })
+            app.MapGet("/users", async (IUserService userService, IMapper mapper)
+                    => mapper.Map<List<Api.Models.User>>(await userService.GetAsync()))
             .WithName("Get all users")
             .WithOpenApi();
 
-            app.MapGet("/users/{id}", async (string id, IUserService userService, IMapper mapper) =>
-                {
-                    return mapper.Map<Api.Models.User>(await userService.GetByIdAsync(id));
-                })
+            app.MapGet("/users/{id}", async (string id, IUserService userService, IMapper mapper)
+                    => mapper.Map<Api.Models.User>(await userService.GetByIdAsync(id)))
                 .WithName("Get user by id")
                 .WithOpenApi();
 
@@ -40,17 +36,13 @@ namespace Api.Endpoints
                 .WithName("Create user")
                 .WithOpenApi();
 
-            app.MapPut("/users/{id}", async (string id, User user, IUserService userService, IMapper mapper) =>
-                {
-                    return await userService.UpdateAsync(mapper.Map<Database.Entities.User>(user), id);
-                })
+            app.MapPut("/users/{id}", async (string id, User user, IUserService userService, IMapper mapper)
+                    => await userService.UpdateAsync(mapper.Map<Database.Entities.User>(user), id))
                 .WithName("Update user")
                 .WithOpenApi();
 
-            app.MapDelete("/users/{id}", async (string id, IUserService userService) =>
-                {
-                    return await userService.DeleteAsync(id);
-                })
+            app.MapDelete("/users/{id}", async (string id, IUserService userService)
+                    => await userService.DeleteAsync(id))
                 .WithName("Delete user by id")
                 .WithOpenApi();
 

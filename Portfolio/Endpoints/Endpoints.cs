@@ -6,6 +6,7 @@
         {
             app.RegisterUserEndpoint();
             app.RegisterPersonalDetailsEndpoint();
+            app.RegisterMySkillsEndpoint();
         }
     }
 }
