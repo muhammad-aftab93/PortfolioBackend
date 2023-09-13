@@ -18,6 +18,8 @@ namespace Common
                 return "users";
             else if (collectionName.Contains("personaldetails"))
                 return "personal_details";
+            else if (collectionName.Contains("myskills"))
+                return "my_skills";
             else
                 return "unknown";
         }

@@ -2,6 +2,7 @@
 using Database.Services.Interfaces;
 using MongoDB.Driver;
 using System.Linq.Expressions;
+using MongoDB.Bson;
 
 namespace Database.Services
 {
@@ -33,7 +34,7 @@ namespace Database.Services
 
         public async Task<T> GetByIdAsync(string id)
         {
-            var filter = Builders<T>.Filter.Eq("_id", id);
+            var filter = Builders<T>.Filter.Eq("_id", ObjectId.Parse(id));
             var cursor = await _collection.FindAsync(filter);
             return await cursor.FirstOrDefaultAsync();
         }
@@ -46,14 +47,14 @@ namespace Database.Services
 
         public async Task<bool> UpdateAsync(string id, T entity)
         {
-            var filter = Builders<T>.Filter.Eq("_id", id);
+            var filter = Builders<T>.Filter.Eq("_id", ObjectId.Parse(id));
             var result = await _collection.ReplaceOneAsync(filter, entity);
             return result.IsAcknowledged && result.ModifiedCount > 0;
         }
 
         public async Task<bool> DeleteAsync(string id)
         {
-            var filter = Builders<T>.Filter.Eq("_id", id);
+            var filter = Builders<T>.Filter.Eq("_id", ObjectId.Parse(id));
             var result = await _collection.DeleteOneAsync(filter);
             return result.IsAcknowledged && result.DeletedCount > 0;
         }
