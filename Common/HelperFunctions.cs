@@ -20,6 +20,8 @@ namespace Common
                 return "personal_details";
             else if (collectionName.Contains("myskills"))
                 return "my_skills";
+            else if (collectionName.Contains("myservices"))
+                return "my_services";
             else
                 return "unknown";
         }
