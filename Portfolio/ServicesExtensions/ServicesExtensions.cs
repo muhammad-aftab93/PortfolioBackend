@@ -60,6 +60,7 @@ namespace Api.ServicesExtensions
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IPersonalDetailsService, PersonalDetailsService>();
             builder.Services.AddTransient<IMySkillsService, MySkillsService>();
+            builder.Services.AddTransient<IMyServicesService, MyServicesService>();
             builder.Services.AddSingleton(typeof(IMongoRepository<>), typeof(MongoRepository<>)); // below service is being used as an alternative
             builder.Services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
