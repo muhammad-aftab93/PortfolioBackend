@@ -30,5 +30,9 @@ namespace Database.Entities
         public string Location { get; set; } = null!;
         [BsonElement("picture")]
         public string Picture { get; set; } = null!;
+        [BsonElement("designation")]
+        public string Designation { get; set; } = null!;
+        [BsonElement("role")]
+        public string Role { get; set; } = null!;
     }
 }

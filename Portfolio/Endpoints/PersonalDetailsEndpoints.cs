@@ -10,8 +10,13 @@ namespace Api.Endpoints
     {
         public static void RegisterPersonalDetailsEndpoint(this WebApplication app)
         {
-            app.MapGet("/personal-details", async (IPersonalDetailsService personalDetailsService, IMapper mapper)
-                    => mapper.Map<Api.Models.PersonalDetails>(await personalDetailsService.GetAsync()))
+            app.MapGet("/personal-details", async (IPersonalDetailsService personalDetailsService, IUserService userService, IMapper mapper) =>
+                {
+                    var personalDetails = mapper.Map<Api.Models.PersonalDetails>(await personalDetailsService.GetAsync());
+                    var users = await userService.GetAsync();
+                    personalDetails.Email = users is not null && users.Count > 0 ? users[0].Email : "";
+                    return personalDetails;
+                })
                 .WithName("Get personal details")
                 .WithOpenApi();
 
