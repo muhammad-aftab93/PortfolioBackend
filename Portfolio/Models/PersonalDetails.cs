@@ -14,5 +14,8 @@ namespace Api.Models
         public string PhoneNumber { get; set; } = null!;
         public string Location { get; set; } = null!;
         public string Picture { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Designation { get; set; } = null!;
+        public string Role { get; set; } = null!;
     }
 }

@@ -19,6 +19,7 @@ namespace Api.Mappings
                 .ReverseMap();
 
             CreateMap<Database.Entities.PersonalDetails, Models.PersonalDetails>()
+                .ForMember(dest => dest.Email, opt => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<Models.CreatePersonalDetailsRequest, Database.Entities.PersonalDetails>()
