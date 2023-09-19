@@ -80,6 +80,28 @@ namespace Api.Endpoints
                 .WithName("Logout user")
                 .WithOpenApi();
 
+            app.MapPut("/users/changepassword", [Authorize] async (ChangePasswordRequest request, IUserService userService, HttpContext context) =>
+                {
+                    if (string.IsNullOrEmpty(request.OldPassword) || string.IsNullOrEmpty(request.NewPassword))
+                        return Results.BadRequest("Both old and new passwords are required.");
+
+                    var userId = context.User.FindFirstValue("id")!;
+                    var user = await userService.GetByIdAsync(userId);
+                    if (user is null)
+                        return Results.NotFound("User not found.");
+
+                    if (!BCrypt.Net.BCrypt.Verify(request.OldPassword, user.Password))
+                        return Results.BadRequest("Invalid old password.");
+
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+                    await userService.UpdateAsync(user, userId);
+
+                    return Results.Ok("Password changed successfully.");
+                })
+                .WithName("Change user password")
+                .WithOpenApi();
+
+
             app.MapGet("users/test", [Authorize] (HttpContext context) =>
                 {
                     var userId = context.User.FindFirstValue("id");
