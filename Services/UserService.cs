@@ -44,6 +44,5 @@ namespace Services
 
         public async Task<bool> DeleteAsync(string id)
             => await _dbService.DeleteAsync(id);
-
     }
 }

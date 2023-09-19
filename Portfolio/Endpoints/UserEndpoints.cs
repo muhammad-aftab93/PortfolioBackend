@@ -71,6 +71,15 @@ namespace Api.Endpoints
                 .WithName("Login user")
                 .WithOpenApi();
 
+            app.MapPost("/users/logout", [Authorize] async (HttpContext context, ITokensService tokenService) =>
+                {
+                    var token = context.Request.Headers["Authorization"].ToString().Split(' ')[1];
+                    await tokenService.InvalidateTokenAsync(token);
+                    return Results.Ok("Logged out successfully.");
+                })
+                .WithName("Logout user")
+                .WithOpenApi();
+
             app.MapGet("users/test", [Authorize] (HttpContext context) =>
                 {
                     var userId = context.User.FindFirstValue("id");
