@@ -22,8 +22,10 @@ namespace Common
                 return "my_skills";
             else if (collectionName.Contains("myservices"))
                 return "my_services";
+            else if (collectionName.Contains("blacklistedtokens"))
+                return "blacklisted_tokens";
             else
-                return "unknown";
+                return "";
         }
 
         public static string GenerateToken(string id, string email)
