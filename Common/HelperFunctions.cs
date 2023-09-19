@@ -24,6 +24,8 @@ namespace Common
                 return "my_services";
             else if (collectionName.Contains("blacklistedtokens"))
                 return "blacklisted_tokens";
+            else if (collectionName.Contains("experiences"))
+                return "experiences";
             else
                 return "";
         }
