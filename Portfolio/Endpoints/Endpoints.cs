@@ -8,6 +8,7 @@
             app.RegisterPersonalDetailsEndpoint();
             app.RegisterMySkillsEndpoint();
             app.RegisterMyServicesEndpoint();
+            app.RegisterExperiencesEndpoint();
         }
     }
 }
