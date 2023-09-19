@@ -80,7 +80,7 @@ namespace Api.Endpoints
                 .WithName("Logout user")
                 .WithOpenApi();
 
-            app.MapPut("/users/changepassword", [Authorize] async (ChangePasswordRequest request, IUserService userService, HttpContext context) =>
+            app.MapPut("/users/change-password", [Authorize] async (ChangePasswordRequest request, IUserService userService, HttpContext context) =>
                 {
                     if (string.IsNullOrEmpty(request.OldPassword) || string.IsNullOrEmpty(request.NewPassword))
                         return Results.BadRequest("Both old and new passwords are required.");
