@@ -2,6 +2,7 @@
 using Database.Services.Interfaces;
 using MongoDB.Driver;
 using System.Linq.Expressions;
+using Common.Interfaces;
 using MongoDB.Bson;
 
 namespace Database.Services
@@ -9,13 +10,15 @@ namespace Database.Services
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly IMongoCollection<T> _collection;
+        private readonly IHelperFunctions _helperFunctions;
 
-        public GenericRepository()
+        public GenericRepository(IHelperFunctions helperFunctions)
         {
+            _helperFunctions = helperFunctions;
             var client = new MongoClient(MongoDbSettings.ConnectionURI);
             var database = client.GetDatabase(MongoDbSettings.DatabaseName);
             _collection = database.GetCollection<T>(
-                HelperFunctions.EvaluateCollectionName<T>()
+                _helperFunctions.EvaluateCollectionName<T>()
             );
         }
 
