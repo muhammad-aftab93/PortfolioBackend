@@ -9,6 +9,7 @@ using Services.Interfaces;
 using System.Text;
 using Api.Middlewares;
 using Microsoft.OpenApi.Models;
+using Common.Interfaces;
 
 namespace Api.ServicesExtensions
 {
@@ -54,8 +55,10 @@ namespace Api.ServicesExtensions
             JwtSettings.JwtAudience = builder.Configuration["JwtSettings:JwtAudience"]!;
             JwtSettings.JwtSecretKey = builder.Configuration["JwtSettings:JwtSecretKey"]!;
             builder.Services.AddCors();
+            builder.Services.AddTransient<IHelperFunctions, HelperFunctions>();
+            var helperFunctions = builder.Services.BuildServiceProvider().GetRequiredService<IHelperFunctions>();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => options.TokenValidationParameters = HelperFunctions.GetTokenValidationParameters());
+                .AddJwtBearer(options => options.TokenValidationParameters = helperFunctions.GetTokenValidationParameters());
             builder.Services.AddAuthorization();
             builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddTransient<IPersonalDetailsService, PersonalDetailsService>();

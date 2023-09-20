@@ -8,6 +8,7 @@ using Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Common.Interfaces;
 
 namespace Api.Endpoints
 {
@@ -46,7 +47,8 @@ namespace Api.Endpoints
                 .WithName("Delete user by id")
                 .WithOpenApi();
 
-            app.MapPost("/users/login", [AllowAnonymous] async ([FromBody] LoginRequest request, IUserService userService, IMapper mapper) =>
+            app.MapPost("/users/login", [AllowAnonymous] async ([FromBody] LoginRequest request, IUserService userService, IMapper mapper,
+                IHelperFunctions helperFunctions) =>
                 {
                     if (string.IsNullOrEmpty(request.Email))
                         return Results.BadRequest("Email is required.");
@@ -60,7 +62,7 @@ namespace Api.Endpoints
                     if (!BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
                         return Results.BadRequest("Invalid username/password.");
 
-                    var token = HelperFunctions.GenerateToken(user.Id, request.Email);
+                    var token = helperFunctions.GenerateToken(user.Id, request.Email);
 
                     return Results.Ok(new
                     {

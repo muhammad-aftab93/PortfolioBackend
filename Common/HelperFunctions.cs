@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Common.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Common
 {
-    public static class HelperFunctions
+    public class HelperFunctions : IHelperFunctions
     {
-        public static string EvaluateCollectionName<T>()
+        public string EvaluateCollectionName<T>()
         {
             var collectionName = typeof(T).ToString().ToLower().Split('.');
             if (collectionName.Contains("user"))
@@ -34,7 +35,7 @@ namespace Common
                 return "";
         }
 
-        public static string GenerateToken(string id, string email)
+        public string GenerateToken(string id, string email)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.JwtSecretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -57,17 +58,17 @@ namespace Common
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public static string? GetUserIdFromToken(string token)
+        public string? GetUserIdFromToken(string token)
         {
             if (token == null) throw new ArgumentNullException(nameof(token));
             var tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = GetTokenValidationParameters();
             var claimsPrincipal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
-            var subClaim = claimsPrincipal.FindFirst("sub");
+            var subClaim = claimsPrincipal.FindFirst("id");
             return subClaim?.Value;
         }
 
-        public static TokenValidationParameters GetTokenValidationParameters()
+        public TokenValidationParameters GetTokenValidationParameters()
         {
             return new TokenValidationParameters
             {

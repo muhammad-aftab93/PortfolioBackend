@@ -8,19 +8,22 @@ using System.Threading.Tasks;
 using Database.Services.Interfaces;
 using MongoDB.Bson;
 using Common;
+using Common.Interfaces;
 
 namespace Database.Services
 {
     public class MongoRepository<T> : IMongoRepository<T> where T : new()
     {
         private readonly IMongoCollection<T> _collection;
+        private readonly IHelperFunctions _helperFunctions;
 
-        public MongoRepository()
+        public MongoRepository(IHelperFunctions helperFunctions)
         {
+            _helperFunctions = helperFunctions;
             var client = new MongoClient(MongoDbSettings.ConnectionURI);
             var database = client.GetDatabase(MongoDbSettings.DatabaseName);
             _collection = database.GetCollection<T>(
-                HelperFunctions.EvaluateCollectionName<T>()
+                _helperFunctions.EvaluateCollectionName<T>()
                 );
         }
 
