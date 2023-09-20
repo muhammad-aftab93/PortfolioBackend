@@ -26,6 +26,8 @@ namespace Common
                 return "blacklisted_tokens";
             else if (collectionName.Contains("experiences"))
                 return "experiences";
+            else if (collectionName.Contains("educations"))
+                return "educations";
             else
                 return "";
         }

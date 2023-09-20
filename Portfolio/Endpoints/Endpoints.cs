@@ -9,6 +9,7 @@
             app.RegisterMySkillsEndpoint();
             app.RegisterMyServicesEndpoint();
             app.RegisterExperiencesEndpoint();
+            app.RegisterEducationsEndpoints();
         }
     }
 }
