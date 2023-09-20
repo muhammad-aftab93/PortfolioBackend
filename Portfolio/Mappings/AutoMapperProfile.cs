@@ -53,6 +53,13 @@ namespace Api.Mappings
             CreateMap<Models.CreateEducationRequest, Database.Entities.Educations>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ReverseMap();
+            
+            CreateMap<Models.Certifications, Database.Entities.Certifications>()
+                .ReverseMap();
+
+            CreateMap<Models.CreateCertificationRequest, Database.Entities.Certifications>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ReverseMap();
         }
     }
 }

@@ -28,6 +28,8 @@ namespace Common
                 return "experiences";
             else if (collectionName.Contains("educations"))
                 return "educations";
+            else if (collectionName.Contains("certifications"))
+                return "certifications";
             else
                 return "";
         }
