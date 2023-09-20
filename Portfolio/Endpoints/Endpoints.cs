@@ -10,6 +10,7 @@
             app.RegisterMyServicesEndpoint();
             app.RegisterExperiencesEndpoint();
             app.RegisterEducationsEndpoints();
+            app.RegisterCertificationsEndpoints();
         }
     }
 }

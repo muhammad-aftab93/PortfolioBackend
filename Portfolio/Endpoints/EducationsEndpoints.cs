@@ -42,6 +42,5 @@ namespace Api.Endpoints
                 .WithName("Delete education by id")
                 .WithOpenApi();
         }
-        
     }
 }
