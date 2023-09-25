@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Services.Interfaces;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints
 {
@@ -31,6 +32,23 @@ namespace Api.Endpoints
                 })
                 .WithName("Save personal details")
                 .WithOpenApi();
+            
+            app.MapPost("/upload-picture",
+            //[Authorize]
+            async ([FromForm(Name = "file")] IFormFile file, IBlobService blobService, IPersonalDetailsService 
+            personalDetailsService, IMapper mapper) =>
+            {
+                var url = await blobService.UploadAsync(file);
+                var personalDetails = mapper.Map<Api.Models.PersonalDetails>(await personalDetailsService.GetAsync());
+                personalDetails.Picture = url;
+                var result = await personalDetailsService.SaveAsync(
+                    mapper.Map<Database.Entities.PersonalDetails>(personalDetails),
+                    true
+                );
+                
+                return result ? "File uploaded successfully!" : "Failed to upload file!";
+            })
+            .WithName("Upload picture");
         }
     }
 }
