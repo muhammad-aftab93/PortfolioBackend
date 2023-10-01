@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Services.Interfaces;
 using System.Security.Claims;
+using Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Endpoints
@@ -38,8 +39,9 @@ namespace Api.Endpoints
             async ([FromForm(Name = "file")] IFormFile file, IBlobService blobService, IPersonalDetailsService 
             personalDetailsService, IMapper mapper) =>
             {
-                var url = await blobService.UploadAsync(file);
                 var personalDetails = mapper.Map<Api.Models.PersonalDetails>(await personalDetailsService.GetAsync());
+                var url = await blobService.UploadAsync(file, BlobContainers.Images);
+                await blobService.RemoveFileAsync(HelperFunctions.ExtractFileNameFromUrl(personalDetails.Picture), BlobContainers.Images);
                 personalDetails.Picture = url;
                 var result = await personalDetailsService.SaveAsync(
                     mapper.Map<Database.Entities.PersonalDetails>(personalDetails),

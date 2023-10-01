@@ -53,7 +53,6 @@ namespace Api.ServicesExtensions
             JwtSettings.JwtAudience = builder.Configuration["JwtSettings:JwtAudience"]!;
             JwtSettings.JwtSecretKey = builder.Configuration["JwtSettings:JwtSecretKey"]!;
             BlobSettings.ConnectionString = builder.Configuration["BlobSettings:ConnectionString"]!;
-            BlobSettings.ContainerName = builder.Configuration["BlobSettings:ContainerName"]!;
             builder.Services.AddCors();
             builder.Services.AddTransient<IHelperFunctions, HelperFunctions>();
             var helperFunctions = builder.Services.BuildServiceProvider().GetRequiredService<IHelperFunctions>();
