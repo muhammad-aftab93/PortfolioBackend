@@ -3,10 +3,8 @@ using Common;
 using Database.Services;
 using Database.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Services;
 using Services.Interfaces;
-using System.Text;
 using Api.Middlewares;
 using Microsoft.OpenApi.Models;
 using Common.Interfaces;
@@ -54,6 +52,7 @@ namespace Api.ServicesExtensions
             JwtSettings.JwtIssuer = builder.Configuration["JwtSettings:JwtIssuer"]!;
             JwtSettings.JwtAudience = builder.Configuration["JwtSettings:JwtAudience"]!;
             JwtSettings.JwtSecretKey = builder.Configuration["JwtSettings:JwtSecretKey"]!;
+            BlobSettings.ConnectionString = builder.Configuration["BlobSettings:ConnectionString"]!;
             builder.Services.AddCors();
             builder.Services.AddTransient<IHelperFunctions, HelperFunctions>();
             var helperFunctions = builder.Services.BuildServiceProvider().GetRequiredService<IHelperFunctions>();
@@ -68,6 +67,7 @@ namespace Api.ServicesExtensions
             builder.Services.AddTransient<IExperiencesService, ExperiencesService>();
             builder.Services.AddTransient<IEducationsService, EducationsService>();
             builder.Services.AddTransient<ICertificationsService, CertificationsService>();
+            builder.Services.AddTransient<IBlobService, BlobService>();
             builder.Services.AddSingleton(typeof(IMongoRepository<>), typeof(MongoRepository<>)); // below service is being used as an alternative
             builder.Services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

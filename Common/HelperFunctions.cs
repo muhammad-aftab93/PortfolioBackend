@@ -81,5 +81,12 @@ namespace Common
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtSettings.JwtSecretKey))
             };
         }
+
+        public static string ExtractFileNameFromUrl(string url)
+        {
+            if (url == null) throw new ArgumentNullException(nameof(url));
+            string[] parts = url.Split('/');
+            return parts[parts.Length - 1];
+        }
     }
 }
