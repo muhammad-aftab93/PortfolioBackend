@@ -1,8 +1,8 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Models
 {
+    [ApiExplorerSettings(GroupName = "ApiModels")]
     public class PersonalDetails
     {
         public string Id { get; set; } = null!;

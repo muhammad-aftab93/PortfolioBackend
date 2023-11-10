@@ -8,6 +8,7 @@ using Services.Interfaces;
 using Api.Middlewares;
 using Microsoft.OpenApi.Models;
 using Common.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace Api.ServicesExtensions
 {

@@ -14,20 +14,16 @@ namespace Services
         public async Task<PersonalDetails?> GetAsync()
             => (await _repository.GetAsync()).FirstOrDefault();
 
-        public async Task<bool> SaveAsync(PersonalDetails personalDetails, bool savePicture = false)
+        public async Task<PersonalDetails> SaveAsync(PersonalDetails personalDetails, bool savePicture = false)
         {
             if (string.IsNullOrEmpty(personalDetails.Id))
-            {
-                var result = await _repository.CreateAsync(personalDetails);
-                return !string.IsNullOrEmpty(result.Id);
-            }
-            else
-            {
-                var existing = await _repository.GetByIdAsync(personalDetails.Id);
-                if (!savePicture)
-                    personalDetails.Picture = existing.Picture;
-                return await _repository.UpdateAsync(personalDetails.Id, personalDetails);
-            }
+                return await _repository.CreateAsync(personalDetails);
+
+            var existing = await _repository.GetByIdAsync(personalDetails.Id);
+            if (!savePicture)
+                personalDetails.Picture = existing.Picture;
+            await _repository.UpdateAsync(personalDetails.Id, personalDetails);
+            return personalDetails;
         }
     }
 }
