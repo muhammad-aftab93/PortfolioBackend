@@ -53,7 +53,15 @@ namespace Api.ServicesExtensions
             JwtSettings.JwtAudience = builder.Configuration["JwtSettings:JwtAudience"]!;
             JwtSettings.JwtSecretKey = builder.Configuration["JwtSettings:JwtSecretKey"]!;
             BlobSettings.ConnectionString = builder.Configuration["BlobSettings:ConnectionString"]!;
-            builder.Services.AddCors();
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin();
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyHeader();
+                });
+            });
             builder.Services.AddTransient<IHelperFunctions, HelperFunctions>();
             var helperFunctions = builder.Services.BuildServiceProvider().GetRequiredService<IHelperFunctions>();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -85,12 +93,7 @@ namespace Api.ServicesExtensions
             else
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Portfolio API v1"));
 
-            app.UseCors(options =>
-            {
-                options.AllowAnyOrigin();
-                options.AllowAnyMethod();
-                options.AllowAnyHeader();
-            });
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<AuthorizationHeaderMiddleware>();

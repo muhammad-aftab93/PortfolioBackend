@@ -34,9 +34,7 @@ namespace Api.Endpoints
                 .WithName("Save personal details")
                 .WithOpenApi();
             
-            app.MapPost("/upload-picture",
-            //[Authorize]
-            async ([FromForm(Name = "file")] IFormFile file, IBlobService blobService, IPersonalDetailsService 
+            app.MapPost("/upload-picture", [Authorize] async ([FromForm(Name = "file")] IFormFile file, IBlobService blobService, IPersonalDetailsService 
             personalDetailsService, IMapper mapper) =>
             {
                 var personalDetails = mapper.Map<Api.Models.PersonalDetails>(await personalDetailsService.GetAsync());
